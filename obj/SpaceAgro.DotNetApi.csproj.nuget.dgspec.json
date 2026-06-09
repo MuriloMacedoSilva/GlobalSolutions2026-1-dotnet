@@ -1,0 +1,105 @@
+{
+  "format": 1,
+  "restore": {
+    "/home/murilo/Documentos/GlobalSolutions/dotNet/SpaceAgro.DotNetApi/SpaceAgro.DotNetApi.csproj": {}
+  },
+  "projects": {
+    "/home/murilo/Documentos/GlobalSolutions/dotNet/SpaceAgro.DotNetApi/SpaceAgro.DotNetApi.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/murilo/Documentos/GlobalSolutions/dotNet/SpaceAgro.DotNetApi/SpaceAgro.DotNetApi.csproj",
+        "projectName": "SpaceAgro.DotNetApi",
+        "projectPath": "/home/murilo/Documentos/GlobalSolutions/dotNet/SpaceAgro.DotNetApi/SpaceAgro.DotNetApi.csproj",
+        "packagesPath": "/home/murilo/.nuget/packages/",
+        "outputPath": "/home/murilo/Documentos/GlobalSolutions/dotNet/SpaceAgro.DotNetApi/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/murilo/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "/usr/lib64/dotnet/library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.100"
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.OpenApi": {
+              "target": "Package",
+              "version": "[8.0.*, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.11, )"
+            },
+            "Newtonsoft.json": {
+              "target": "Package",
+              "version": "[13.0.4, )"
+            },
+            "Oracle.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.21.240, )"
+            },
+            "Scalar.AspNetCore": {
+              "target": "Package",
+              "version": "[1.2.*, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[6.6.2, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.NETCore.App.Host.linux-x64",
+              "version": "[8.0.27, 8.0.27]"
+            }
+          ],
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/9.0.117/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
