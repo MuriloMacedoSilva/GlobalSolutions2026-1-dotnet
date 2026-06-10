@@ -7,7 +7,7 @@ namespace SpaceAgro.DotNetApi.Models
     public class Talhao
     {
         [Key]
-        [Column("ID_TALHAO")] // Em maiúsculo
+        [Column("ID_TALHAO")]
         public int Id { get; set; }
 
         [Column("NOME_TALHAO")]

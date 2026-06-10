@@ -6,11 +6,6 @@ using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// =========================================================================
-// CONFIGURAÇÃO DE SERVIÇOS (DI)
-// =========================================================================
-
-// Gerador de metadados OpenAPI via SwaggerGen (Compatível com .NET 8)
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -22,53 +17,38 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-// Suporte a CORS para o Aplicativo Mobile React Native conseguir consumir a API
 builder.Services.AddCors(options => {
     options.AddPolicy("AllowAll", policy => policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 });
 
-// String de Conexão Inteligente para o Banco da FIAP
 var connectionString = Environment.GetEnvironmentVariable("ORACLE_CONN_STRING") 
                        ?? builder.Configuration.GetConnectionString("OracleConnection");
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseOracle(connectionString));
 
-// Registra o HttpClient e o Serviço de Integração com a NASA
 builder.Services.AddHttpClient<NasaSpaceService>();
 
 var app = builder.Build();
 
-// =========================================================================
-// PIPELINE DE MIDDLEWARES HTTP
-// =========================================================================
-
-// Ativa o JSON de rotas e renderiza a interface do SCALAR no ambiente de Dev
 if (app.Environment.IsDevelopment())
 {
-    // 1. PRIMEIRO: Inicializa o gerador de rotas do Swagger para expor o JSON de metadados
     app.UseSwagger(options =>
     {
         options.RouteTemplate = "openapi/{documentName}.json";
     });
 
-    // 2. SEGUNDO: Ativa a interface do Scalar apontando para o arquivo criado acima de forma simplificada e limpa
     app.MapScalarApiReference(options =>
     {
         options.WithTitle("SpaceAgro API - Documentação Executiva");
         options.WithTheme(ScalarTheme.DeepSpace);
-        options.WithOpenApiRoutePattern("/openapi/v1.json"); // Alimenta o Scalar com o JSON gerado pelo Swagger
+        options.WithOpenApiRoutePattern("/openapi/v1.json");
         options.WithDefaultHttpClient(ScalarTarget.JavaScript, ScalarClient.Fetch);
     });
 }
 
 app.UseCors("AllowAll");
 
-// =========================================================================
-// ENDPOINTS (MINIMAL API)
-// =========================================================================
-
-// Endpoint 1: Consulta direta de dados brutos da NASA por Lat/Lon
 app.MapGet("/api/climaespacial/previsao", async (
     [FromQuery] double lat, 
     [FromQuery] double lon, 
@@ -83,7 +63,6 @@ app.MapGet("/api/climaespacial/previsao", async (
 .WithOpenApi();
 
 
-// Endpoint 2: Diagnóstico Cruzado (Une dados de Satélite com dados do Solo do ESP32)
 app.MapGet("/api/climaespacial/diagnostico/{talhaoId:int}", async (
         int talhaoId,
         AppDbContext context,

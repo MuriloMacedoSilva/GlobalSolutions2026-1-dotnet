@@ -33,6 +33,12 @@
   - [Passos](#passos)
   - [Configuração do Banco Oracle](#configuração-do-banco-oracle)
   - [Perfis de Execução](#perfis-de-execução)
+- [Testes](#testes)
+  - [Via Swagger UI](#via-swagger-ui)
+  - [Via Scalar UI](#via-scalar-ui)
+  - [Via curl](#via-curl)
+  - [Via VS Code REST Client (.http)](#via-vs-code-rest-client-http)
+  - [Exemplos de Testes](#exemplos-de-testes)
 - [Scripts Úteis](#scripts-úteis)
 - [Integrantes do Grupo](#integrantes-do-grupo)
 - [Links](#links)
@@ -512,6 +518,208 @@ dotnet run --launch-profile https
 
 ---
 
+## Testes
+
+Esta seção contém instruções e exemplos para testar todos os endpoints da API.
+
+> **Pré-requisito:** A API deve estar rodando (`dotnet run --launch-profile http`).
+
+---
+
+### Via Swagger UI
+
+A interface Swagger permite testar os endpoints visualmente pelo navegador.
+
+```
+http://localhost:5081/swagger
+```
+
+**Passos:**
+1. Abra `http://localhost:5081/swagger` no navegador
+2. Localize o endpoint desejado na lista
+3. Clique no endpoint para expandir
+4. Preencha os parâmetros obrigatórios
+5. Clique em **Try it out** e depois em **Execute**
+6. Visualize a resposta (status code, headers, body)
+
+---
+
+### Via Scalar UI
+
+Interface mais moderna e limpa, com tema escuro DeepSpace.
+
+```
+http://localhost:5081/scalar/v1
+```
+
+**Passos:**
+1. Abra `http://localhost:5081/scalar/v1` no navegador
+2. Navegue pelos endpoints listados à esquerda
+3. Preencha os parâmetros no formulário interativo
+4. Clique em **Send** para executar a requisição
+5. Visualize a resposta formatada
+
+---
+
+### Via curl
+
+Teste diretamente do terminal utilizando `curl`.
+
+**Previsão (dados brutos NASA):**
+```bash
+curl -X GET "http://localhost:5081/api/climaespacial/previsao?lat=-23.5505&lon=-46.6333" \
+  -H "Accept: application/json"
+```
+
+**Diagnóstico completo (requer talhão cadastrado no Oracle):**
+```bash
+curl -X GET "http://localhost:5081/api/climaespacial/diagnostico/1" \
+  -H "Accept: application/json"
+```
+
+---
+
+### Via VS Code REST Client (.http)
+
+O projeto já inclui o arquivo `SpaceAgro.DotNetApi.http` para teste com a extensão **REST Client** do VS Code.
+
+**Passos:**
+1. Instale a extensão [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) no VS Code
+2. Abra o arquivo `SpaceAgro.DotNetApi.http`
+3. Clique em **Send Request** acima da requisição desejada
+
+**Conteúdo sugerido para o arquivo:**
+
+```http
+### Previsão NASA por coordenadas
+GET http://localhost:5081/api/climaespacial/previsao?lat=-23.5505&lon=-46.6333
+Accept: application/json
+
+### Diagnóstico completo do talhão 1
+GET http://localhost:5081/api/climaespacial/diagnostico/1
+Accept: application/json
+
+### Diagnóstico com talhão inexistente (deve retornar 404)
+GET http://localhost:5081/api/climaespacial/diagnostico/999
+Accept: application/json
+
+### Previsão sem parâmetros (deve retornar 400)
+GET http://localhost:5081/api/climaespacial/previsao?lat=0&lon=0
+Accept: application/json
+```
+
+---
+
+### Exemplos de Testes
+
+#### Cenário 1: Previsão com coordenadas válidas
+
+**Requisição:**
+```bash
+curl -s "http://localhost:5081/api/climaespacial/previsao?lat=-15.7801&lon=-47.9292" \
+  -H "Accept: application/json" | head -c 500
+```
+
+**Resposta esperada (200 OK):**
+```json
+{
+  "type": "FeatureCollection",
+  "features": [{
+    "geometry": {},
+    "properties": {
+      "parameter": {
+        "T2M": {
+          "ANN": 24.12,
+          "JAN": 26.8,
+          "FEB": 26.9,
+          "MAR": 26.3,
+          ...
+        },
+        "RH2M": {
+          "ANN": 78.3,
+          "JAN": 82.1,
+          ...
+        }
+      }
+    }
+  }]
+}
+```
+
+#### Cenário 2: Diagnóstico de talhão existente
+
+**Requisição:**
+```bash
+curl -s "http://localhost:5081/api/climaespacial/diagnostico/1" \
+  -H "Accept: application/json" | python3 -m json.tool
+```
+
+**Resposta esperada (200 OK):**
+```json
+{
+  "talhaoNome": "Nome do Talhão",
+  "cultura": "Soja",
+  "coordenadas": {
+    "lat": -23.55,
+    "lon": -46.63
+  },
+  "dadosMacro_Nasa": { ... },
+  "insightsClimaticos": {
+    "temperaturaMediaAnual": 24.1,
+    "umidadeMediaAnual": 78.3,
+    "mesMaisQuente": "Janeiro",
+    "riscoClimatico": "BAIXO",
+    "analise": "Para a cultura Soja, a região apresenta..."
+  },
+  "dadosMicro_SoloAtual": {
+    "temperaturaSolo": 26.5,
+    "umidadeSolo": 72.3,
+    "ultimaAtualizacao": "2026-06-09T10:30:00"
+  },
+  "recomendacaoSistema": "Diagnóstico cruzado executado com dados NASA POWER e telemetria local do solo."
+}
+```
+
+#### Cenário 3: Talhão inexistente (erro 404)
+
+**Requisição:**
+```bash
+curl -s "http://localhost:5081/api/climaespacial/diagnostico/999" \
+  -H "Accept: application/json"
+```
+
+**Resposta esperada (404 Not Found):**
+```
+"Talhão não encontrado."
+```
+
+#### Cenário 4: Parâmetros inválidos (erro 400)
+
+**Requisição:**
+```bash
+curl -s "http://localhost:5081/api/climaespacial/previsao?lat=0&lon=0" \
+  -H "Accept: application/json"
+```
+
+**Resposta esperada (400 Bad Request):**
+```
+"A latitude e longitude são obrigatórias."
+```
+
+#### Cenário 5: Diagnóstico sem sensor IoT
+
+Quando não há leituras de sensor cadastradas para o talhão, o campo `dadosMicro_SoloAtual` retorna `null`:
+
+```json
+{
+  "talhaoNome": "Nome do Talhão",
+  "dadosMicro_SoloAtual": null,
+  "recomendacaoSistema": "Diagnóstico baseado apenas em dados macroclimáticos da NASA. Nenhuma leitura recente do sensor IoT foi encontrada."
+}
+```
+
+---
+
 ## Scripts Úteis
 
 | Comando | Descrição |
@@ -540,21 +748,7 @@ dotnet run --launch-profile https
 ## Links
 
 - 📺 **Vídeo YouTube:** [Video.com.br](Video.com.br)
-- 📂 **Repositório GitHub (Frontend):** [https://github.com/MuriloMacedoSilva/space-agro-front](https://github.com/MuriloMacedoSilva/space-agro-front)
+- 📂 **Repositório GitHub:** [git@github.com:MuriloMacedoSilva/GlobalSolutions2026-1-dotnet.git]()
 - 🏫 **FIAP:** [https://www.fiap.com.br](https://www.fiap.com.br)
 - 🛰️ **NASA POWER:** [https://power.larc.nasa.gov](https://power.larc.nasa.gov)
-- 📖 **Scalar:** [https://scalar.com](https://scalar.com)
-
----
-
-## Licença
-
-Este projeto está licenciado sob a licença MIT — veja o arquivo [LICENSE](LICENSE) para mais detalhes.
-
----
-
-<p align="center">
-  <strong>SpaceAgro API</strong> — Global Solution FIAP 2026<br>
-  <em>Inteligência geoespacial para o agronegócio</em><br><br>
-  <sub>🛰️ Construído com .NET 8 + Oracle + NASA POWER</sub>
-</p>
+- 📖 **Scalar:** [http://localhost:5081/scalar/v1#tag/spaceagrodotnetapi]()

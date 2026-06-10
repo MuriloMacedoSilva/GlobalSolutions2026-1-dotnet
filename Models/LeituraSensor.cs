@@ -8,7 +8,7 @@ namespace SpaceAgro.DotNetApi.Models
     public class LeituraSensor
     {
         [Key]
-        [Column("ID_LEITURA")] // Em maiúsculo
+        [Column("ID_LEITURA")]
         public int Id { get; set; }
 
         [Column("TEMPERATURA")]
