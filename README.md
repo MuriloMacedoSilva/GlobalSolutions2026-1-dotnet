@@ -748,7 +748,7 @@ Quando não há leituras de sensor cadastradas para o talhão, o campo `dadosMic
 ## Links
 
 - 📺 **Vídeo YouTube:** [Video.com.br](Video.com.br)
-- 📂 **Repositório GitHub:** [git@github.com:MuriloMacedoSilva/GlobalSolutions2026-1-dotnet.git]()
+- 📂 **Repositório GitHub:** [https://github.com/MuriloMacedoSilva/GlobalSolutions2026-1-dotnet.git]()
 - 🏫 **FIAP:** [https://www.fiap.com.br](https://www.fiap.com.br)
 - 🛰️ **NASA POWER:** [https://power.larc.nasa.gov](https://power.larc.nasa.gov)
 - 📖 **Scalar:** [http://localhost:5081/scalar/v1#tag/spaceagrodotnetapi]()
