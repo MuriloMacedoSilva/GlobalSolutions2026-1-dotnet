@@ -21,11 +21,8 @@ builder.Services.AddCors(options => {
     options.AddPolicy("AllowAll", policy => policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 });
 
-var connectionString = Environment.GetEnvironmentVariable("ORACLE_CONN_STRING") 
-                       ?? builder.Configuration.GetConnectionString("OracleConnection");
-
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseOracle(connectionString));
+    options.UseOracle(builder.Configuration.GetConnectionString("OracleConnection")));
 
 builder.Services.AddHttpClient<NasaSpaceService>();
 
@@ -48,6 +45,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors("AllowAll");
+
+app.MapGet("/health", () => Results.Ok(new { status = "healthy", timestamp = DateTime.UtcNow }))
+    .WithName("HealthCheck");
 
 app.MapGet("/api/climaespacial/previsao", async (
     [FromQuery] double lat, 

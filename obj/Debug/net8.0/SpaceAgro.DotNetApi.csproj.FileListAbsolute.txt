@@ -122,3 +122,4 @@
 /home/murilo/Documentos/GlobalSolutions/dotNet/SpaceAgro.DotNetApi/obj/Debug/net8.0/SpaceAgro.DotNetApi.pdb
 /home/murilo/Documentos/GlobalSolutions/dotNet/SpaceAgro.DotNetApi/obj/Debug/net8.0/SpaceAgro.DotNetApi.genruntimeconfig.cache
 /home/murilo/Documentos/GlobalSolutions/dotNet/SpaceAgro.DotNetApi/obj/Debug/net8.0/ref/SpaceAgro.DotNetApi.dll
+/home/murilo/Documentos/GlobalSolutions/dotNet/SpaceAgro.DotNetApi/obj/Debug/net8.0/SpaceAgro.DotNetApi.sourcelink.json

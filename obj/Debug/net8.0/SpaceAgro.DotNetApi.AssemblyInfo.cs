@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SpaceAgro.DotNetApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bd7647cfe5957d7d344465c1302989c86ad8729d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c9122e3bf2d451b3c7e1be03f563fc7f92e68a38")]
 [assembly: System.Reflection.AssemblyProductAttribute("SpaceAgro.DotNetApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SpaceAgro.DotNetApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
