@@ -173,6 +173,9 @@ SpaceAgro.DotNetApi/
 
 ## Endpoints
 
+# Agora a api também roda no render : 
+https://globalsolutions2026-1-dotnet.onrender.com
+
 ### GET /api/climaespacial/previsao
 
 Consulta dados brutos da NASA POWER para coordenadas geográficas específicas.
